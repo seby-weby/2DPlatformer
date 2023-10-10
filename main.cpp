@@ -135,7 +135,7 @@ public:
     {
         if (IIB(Cam.x, sprite.x + sprite.w, Cam.x + Cam.w, true) || IIB(Cam.x, sprite.x, Cam.x + Cam.w, true))
         {
-            if (coinY > originY - floatHeight & floatingUp)
+            if ((coinY > (originY - floatHeight)) & floatingUp)
             {
                 coinY -= floatSpeed;
                 sprite.y = (int)coinY;
@@ -161,12 +161,14 @@ public:
     }
 };
 // Magma Class
-class Magma{
-    public:
+class Magma
+{
+public:
     SDL_Rect sprite;
     SDL_Color color = Lava;
     // Constructor
-    Magma(int x, int y, int w, int h){
+    Magma(int x, int y, int w, int h)
+    {
         sprite.x = x;
         sprite.y = y;
         sprite.w = w;
@@ -183,6 +185,7 @@ class Level
 public:
     vector<SDL_Rect> platforms;
     vector<Coin> coins;
+    vector<Magma> magma;
 
     void addPlatform(int x, int y, int width, int height)
     {
@@ -213,12 +216,24 @@ public:
         Coin temp(x, y, coinSizeX, coinSizeY, Gold);
         coins.push_back(temp);
     }
-    /// @brief Draws A level's coins to the temp screen before it is presented
+    /// @brief Draws a level's coins to the temp screen before it is presented
     void drawCoins(SDL_Renderer *renderer, Camera Cam)
     {
         for (int i = 0; i < coins.size(); i++)
         {
             coins[i].Animate(renderer, Cam);
+        }
+    }
+
+    void addMagma(int x, int y, int w, int h)
+    {
+    }
+    /// @brief Draws a level's magma to the temp screen before it is presented
+    void drawMagma(SDL_Renderer *renderer, Camera Cam)
+    {
+        for (int i = 0; i < magma.size(); i++)
+        {
+            drawRect(renderer, &magma[i].sprite, magma[i].color);
         }
     }
 };
@@ -264,11 +279,13 @@ public:
 int main(int argc, char *argv[])
 {
     // Initialize SDL Components
-    if(SDL_Init(SDL_INIT_VIDEO) < 0){
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
         cout << "SDL INIT ERROR \n%s" << SDL_GetError();
     }
     // Initialize TTF
-    if(TTF_Init() < 0){
+    if (TTF_Init() < 0)
+    {
         cout << "TTF INIT ERROR \n%s" << TTF_GetError();
     }
     // Fonts
@@ -440,7 +457,6 @@ int main(int argc, char *argv[])
             if (PTSC(player.sprite, Level1.coins[i].sprite))
             {
                 player.score++;
-                cout << "Your score is: " << player.score << endl;
                 Level1.coins.erase(Level1.coins.begin() + i);
                 i--;
             }
@@ -498,7 +514,7 @@ int main(int argc, char *argv[])
                     }
                 }
                 // Apply Player collisions on the x;
-                if (hCol & player.dx > 0)
+                if (hCol & (player.dx > 0))
                 {
                     player.sprite.x = Level1.platforms[i].x - player.sprite.w;
                     player.dx = 0;
@@ -558,11 +574,14 @@ int main(int argc, char *argv[])
             player.dy = 0;
         }
         // Make sure Player isn't too far to the left or right
-        if(player.sprite.x < leftBorder){
+        if (player.sprite.x < leftBorder)
+        {
             player.sprite.x = leftBorder;
             Cam.x = (player.sprite.x - Cam.w / 2) + player.sprite.w / 2;
-        } else if (player.sprite.x + player.sprite.w > rightBorder){
-            player.sprite.x = rightBorder-player.sprite.w;
+        }
+        else if (player.sprite.x + player.sprite.w > rightBorder)
+        {
+            player.sprite.x = rightBorder - player.sprite.w;
             Cam.x = (player.sprite.x - Cam.w / 2) + player.sprite.w / 2;
         }
         // Draw Coins
@@ -575,14 +594,14 @@ int main(int argc, char *argv[])
         // Draw Platforms
         Level1.drawPlatforms(renderer, Cam);
         // Score Text
-        scoreText[7] = player.score+'0';
+        scoreText[7] = player.score + '0';
         drawText(renderer, OpenSans, scoreText, 10, 10, Black);
         // Render
         SDL_RenderPresent(renderer);
         // Check if Player won
         if (player.score >= 5)
         {
-            cout << "\nYou Win!"
+            cout << "You Win!"
                  << "\nYour Score Was: " << player.score << endl;
             gameloop = false;
         }
