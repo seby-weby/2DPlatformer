@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
     Cam.h = DM.h;
     // Set Left and Right borders (to prevent player just walking far away from the map)
     int leftBorder = -100;
-    int rightBorder = 5000;
+    int rightBorder = 3000;
     // Make mouse invisible
     SDL_ShowCursor(SDL_DISABLE);
     // Frame Delays
@@ -323,17 +323,18 @@ int main(int argc, char *argv[])
     // Setup the Levels
     Level Level1;
     // Add Platforms
-    Level1.addPlatform(1500, 750, 300, 20);
-    Level1.addPlatform(2000, 500, 300, 20);
-    Level1.addPlatform(2500, 200, 300, 20);
-    Level1.addPlatform(2500, 800, 300, 20);
-    Level1.addPlatform(3000, 600, 300, 20);
+    Level1.addPlatform(300, 750, 300, 20);
+    Level1.addPlatform(800, 400, 300, 20);
+    Level1.addPlatform(1300, 200, 300, 20);
+    Level1.addPlatform(1700, 570, 300, 20);
+    Level1.addPlatform(2000, 150, 300, 20);
+    Level1.addPlatform(2450, 150, 300, 20);
     // Add Coins
-    Level1.addCoin(1635, 670);
-    Level1.addCoin(2135, 420);
-    Level1.addCoin(2635, 120);
-    Level1.addCoin(2635, 720);
-    Level1.addCoin(3135, 520);
+    Level1.addCoin(435, 670);
+    Level1.addCoin(935, 320);
+    Level1.addCoin(1435, 120);
+    Level1.addCoin(2135, 70);
+    Level1.addCoin(2660, 300);
     // Initialize Player Values
     Player player(100, 100, 40, 80);
     // Create the window
